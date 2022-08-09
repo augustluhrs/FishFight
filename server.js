@@ -107,10 +107,10 @@ function addRandomFish(){
     name: "Fish " + school.length,
     primaryColor: D.randomHex(),
     secondaryColor: D.randomHex(),
-    strength: xAxis,
-    defense: 16 - xAxis,
-    speed: yAxis,
-    size: 16 - yAxis
+    strength: yAxis,
+    defense: 16 - yAxis,
+    speed: xAxis,
+    size: 16 - xAxis
   }
 
   school.push(new Fish(stats));

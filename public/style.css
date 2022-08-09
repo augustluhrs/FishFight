@@ -1,24 +1,28 @@
 body {
-    margin: 0px
-  }
-  
-  .inputs {
-    font-size: 150%;
-    font-family: "MochiyPopOne-Regular";
-  }
-  
-  .startButts {
-    background-color: black;
-    color: goldenrod;
-    font-size: 200%;
-    font-family: "MochiyPopOne-Regular";
-    text-align: center;
-    border-radius: 12px;
-    transition-duration: 0.4s;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-  }
-  
-  .startButts:hover {
-    background-color: goldenrod;
-    color: rgb(112,16,15);
-  }
+  margin: 0px
+}
+
+.inputs {
+  font-size: 150%;
+  font-family: "MochiyPopOne-Regular";
+  text-align: center;
+  background-color: rgb(6, 82, 149);
+  color: white;
+
+}
+
+.buttons {
+  background-color: rgb(6, 82, 149);
+  color: rgb(218, 32, 159);
+  font-size: 200%;
+  font-family: "MochiyPopOne-Regular";
+  text-align: center;
+  border-radius: 12px;
+  transition-duration: 0.4s;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.buttons:hover {
+  background-color: rgb(218, 32, 159);
+  color: rgb(6, 82, 149);
+}

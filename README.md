@@ -12,3 +12,18 @@ Prototype fish creation on mobile populating a school of fish flocking around a 
 - Fin size independent or relative to body size?
 - Can also select body type?
 - Can also select diet preferences? (extra way to make fish unique, could be linked to powers/abilities)
+- Whats character limit on names?
+- What automod libraries are there for names?
+
+## ToDo
+
+- fix width/length ratios
+- fix eye
+- fix front fin width / back fin length (change up)
+- text on slider axes
+- center css elements
+- test on glitch/mobile
+- color slider
+- server send fish to pond
+- text size
+- "the" in between name and type

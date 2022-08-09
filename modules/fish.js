@@ -17,7 +17,7 @@ class Fish {
         this.creator = stats.creator || "anon";
         this.primaryColor = stats.primaryColor || "#000000";
         this.secondaryColor = stats.secondaryColor || "#FFFFFF";
-        this.position = stats.position || new Victor(Math.random() * D.worldSize.width, Math.random() * D.worldSize.height);
+        this.position = new Victor(Math.random() * D.worldSize.width, Math.random() * D.worldSize.height);
         this.direction = stats.direction || 0;
 
         //fighting stats

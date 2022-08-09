@@ -22,12 +22,10 @@ function preload(){
 
 //open and connect the input socket
 let socket = io('/screen');
-let playerID;
 
 //listen for the confirmation of connection 
 socket.on('connect', () => {
     console.log('now connected to server');
-    playerID = socket.id;
 });
 
 socket.on('update', (data) => {
@@ -68,7 +66,7 @@ function setup(){
     // image(water, width/2, height/2, windowWidth, windowHeight);
 
     //UI
-    randomFishButton = createButton("RANDOM FISH").mousePressed(() => {socket.emit("randomFish")});
+    randomFishButton = createButton("RANDOM FISH").class("buttons").mousePressed(() => {socket.emit("randomFish")});
 };
 
 //
