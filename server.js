@@ -28,8 +28,13 @@ let io = require('socket.io')(server);
 
 const D = require("./modules/defaults");
 const Fish = require("./modules/fish");
+const lerp = require('lerp');
+const Victor = require('victor');
 // let players = {}; 
 let school = [];
+let isBait = false;
+let baitPos = {x: 0, y: 0};
+// let baitVec = new Victor(0, 0);
 
 //
 // MAIN
@@ -38,7 +43,7 @@ let school = [];
 setInterval( () => {
   let oldSchool = structuredClone(school);
   for (let fish of school){
-    fish.swim(oldSchool);
+    fish.swim(oldSchool, isBait, baitPos);
   }
 
   screen.emit("update", {school: school});
@@ -68,6 +73,19 @@ screen.on('connection', (socket) => {
 
   socket.on("randomFish", () => {
     addRandomFish();
+  });
+
+  socket.on("baitToggle", () => {
+    isBait = !isBait;
+    screen.emit("baitToggle", isBait);
+  });
+
+  socket.on("baitPos", (data) => {
+    baitPos.x = lerp(baitPos.x, data.x, 0.4);
+    baitPos.y = lerp(baitPos.y, data.y, 0.4);
+    // let dataVec = new Victor(data.x, data.y);
+    // baitVec.mix(dataVec, 0.4);
+    screen.emit("baitPos", baitPos);
   });
 
   //listen for this client to disconnect

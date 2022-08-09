@@ -15,18 +15,25 @@ class Foid { //fish boid
         this.perceptionRadius = fish.perceptionRadius || 100;
         this.maxSpeed = fish.maxSpeed;
         this.maxForce = fish.maxForce || 0.05;
-        this.desiredSeparation = fish.desiredSeparation || 25; //based on strength
-        this.separationBias = fish.separationBias || 5;
+        this.desiredSeparation = fish.desiredSeparation || 50; //based on strength
+        this.separationBias = fish.separationBias || 10;
         this.desiredFlockSize = fish.desiredFlockSize || 100;
         this.alignmentBias = fish.alignmentBias || 1;
-        this.cohesionBias = fish.cohesionBias || 1.5;
+        this.cohesionBias = fish.cohesionBias || 1;
         // this.hunger = fish.hunger || 10; //to mult food seeking
     }
 
-    run (school) { //main function
+    run (school, isBait, baitPos) { //main function
         this.flock(school);
-        // let snack = this.graze(surroundings.foodAround);
-        // let mate = this.cruise(self, surroundings.neighbors); //findMate() -- needs self for mating info
+        let baitVec = new Victor(baitPos.x, baitPos.y); //for some reason this was giving me grief if I tried a global baitVec
+        if(isBait){
+            if (this.position.distance(baitVec) < 400){
+                let hunger = this.seek(baitVec);
+                hunger.multiply(new Victor(10, 10));
+                this.applyForce(hunger);
+            }
+        }
+
         this.bounds();
         this.update();
         this.position.add(this.velocity);

@@ -29,18 +29,20 @@ class Fish {
         //flocking and display stats derived from fighting stats
         // this.r = stats.r || D.map(this.size, 0, 16, D.sizeMin, D.sizeMax);
         this.maxSpeed = stats.maxSpeed || D.map(this.speed, 0, 16, D.speedMin, D.speedMax);
-        this.bodyLength = stats.bodyLength || D.map(this.size, 16, 0, D.sizeMax / 2, D.sizeMax);
-        this.bodyWidth = stats.bodyLength || D.map(this.size, 0, 16, D.sizeMax / 4, D.sizeMax);
+        this.bodyLength = stats.bodyLength || D.map(this.size, 16, 0, D.sizeMin * 2, D.sizeMax * 2);
+        this.bodyWidth = stats.bodyWidth || D.map(this.size, 0, 16, D.sizeMin, D.sizeMax);
+        // this.bodyLength = stats.bodyLength || D.map(this.size, 16, 0, D.sizeMax / 2, D.sizeMax);
+        // this.bodyWidth = stats.bodyLength || D.map(this.size, 0, 16, D.sizeMax / 4, D.sizeMax);
         this.frontFinSize = stats.frontFinSize || D.map(this.strength, 0, 16, this.bodyWidth * D.finMin, this.bodyWidth * D.finMax);
         this.backFinSize = stats.backFinSize || D.map(this.defense, 0, 16, this.bodyLength * D.finMin, this.bodyLength * D.finMax);
 
         this.foid = new Foid(this);
     }
 
-    swim(school){
-        let [vel, dir] = this.foid.run(school);
+    swim(school, isBait, baitPos){
+        let [vel, dir] = this.foid.run(school, isBait, baitPos);
         this.position.add(vel);
-        
+
         //to smooth jittery rotation
         if (Math.abs(this.direction - dir) > 3.14){
             if(this.direction > dir){

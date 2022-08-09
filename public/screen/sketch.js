@@ -9,9 +9,11 @@
 //
 
 let water;
+let bait;
 
 function preload(){
-    water = loadImage('../assets/waterBackdrop.jpg')
+    water = loadImage('../assets/waterBackdrop.jpg');
+    bait = loadImage('../assets/bait.png');
 }
 
 //
@@ -32,16 +34,26 @@ socket.on('update', (data) => {
     school = data.school;
 })
 
+socket.on('baitToggle', (data) => {
+    isBait = data;
+});
+
+socket.on('baitPos', (data) => { //data is a Victor
+    baitPos.x = data.x;
+    baitPos.y = data.y;
+});
+
 //
 // SETUP AND VARIABLES
 //
 
 let school = [];
 let randomFishButton;
+let isBait = false;
+let baitPos = {x: 0, y: 0};
 
 function setup(){
     createCanvas(1920, 1080);
-
     
     //layout
     ellipseMode(CENTER);
@@ -71,6 +83,11 @@ function draw(){
     for(let fish of school){
         displayFish(fish);
     }
+
+    if (isBait){
+        image(bait, baitPos.x, baitPos.y, 60, 90);
+        socket.emit("baitPos", {x: mouseX, y: mouseY});
+    }
 }
 
 function displayFish(fish){
@@ -98,6 +115,12 @@ function displayFish(fish){
     //eye
     fill(0);
     ellipse((-fish.bodyLength / 2) + (fish.bodyLength / 10), 0, 10, 10);
-    
+
     pop();
+}
+
+function mouseClicked(){
+    if (mouseY < height){ //to prevent from triggering when clicking fish button
+        socket.emit('baitToggle');
+    }
 }
