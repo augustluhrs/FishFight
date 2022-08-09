@@ -1,0 +1,22 @@
+{
+    "name": "fish-fight",
+    "version": "0.0.1",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "author": "August Luhrs",
+    "license": "ISC",
+    "engines": {
+        "node": "16.x"
+    },
+    "dependencies": {
+        "express": "^4.18.1",
+        "lerp": "^1.0.3",
+        "realistic-structured-clone": "^3.0.0",
+        "socket.io": "^4.5.1",
+        "victor": "^1.1.0"
+    }
+}
