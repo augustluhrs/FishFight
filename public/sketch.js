@@ -33,6 +33,7 @@ let canvas;
 let statsDiv, colorDiv, readyDiv, nameDiv, yesDiv, noDiv;
 let statsButton, colorButton, readyButton, nameInput;
 let yesButton, noButton;
+let colorPickerPrimary, colorPickerSecondary;
 let type = "";
 let state = "stats";
 
@@ -60,12 +61,13 @@ let statsSlider = {
 }
 
 //from defaults.js
-const finMin = 3;
-const finMax = 40;
-const widthMin = 10;
-const widthMax = 80;
-const lengthMin = 50;
-const lengthMax = 100;
+const displayScale = 2;
+const finMin = 3 * displayScale;
+const finMax = 40 * displayScale;
+const widthMin = 10 * displayScale;
+const widthMax = 80 * displayScale;
+const lengthMin = 50 * displayScale;
+const lengthMax = 100 * displayScale;
 
 function setup(){
     canvas = createCanvas(windowWidth - 5, windowHeight - 5); //TODO better way of ensuring scrollbars don't show up
@@ -82,25 +84,38 @@ function setup(){
     textSize(width/40);
     strokeWeight(2);
 
+    //color pickers
+    colorPickerPrimary = createColorPicker(fish.primaryColor).position(width/2.5, 4.5 * height/10).size(width/4, height/14);
+    colorPickerPrimary.input(()=>{
+        fish.primaryColor = colorPickerPrimary.value();
+    });
+    colorPickerPrimary.hide();
+    colorPickerSecondary = createColorPicker(fish.secondaryColor).position(width/2.5, 6 * height/10).size(width/4, height/14);
+    colorPickerSecondary.input(()=>{
+        fish.secondaryColor = colorPickerSecondary.value();
+    });
+    colorPickerSecondary.hide();
+
     //UI
-    // nameDiv = createDiv("").position(0, height / 10).size(width, height / 10).class("divs").id("nameDiv");
-    // nameInput = createInput("FISH NAME").class("inputs").parent("nameDiv");
-    nameInput = createInput("FISH NAME").class("inputs").position(0, 0.5 * height / 10).size(width/2, height/10);
+    nameInput = createInput("FISH NAME").class("inputs").position(0, 0.5 * height / 10).size(width - 50, height/10);
     nameInput.center("horizontal");
+
     statsDiv = createDiv("").id("statsDiv").class("divs").position(0, 9 * height/10).size(width/3, height/10);
     statsButton = createButton("STATS").class("buttons").mousePressed(() => {
         state = "stats";
+        colorPickerPrimary.hide();
+        colorPickerSecondary.hide();
     });
     statsButton.size(width/7, height/14).parent("statsDiv");
-    // statsButton.size(width/7, height/14).parent("statsDiv").center("horizontal");
+
     colorDiv = createDiv("").id("colorDiv").class("divs").position(width/3, 9 * height/10).size(width/3, height/10);
-    // colorDiv.center("horizontal");
     colorButton = createButton("COLOR").class("buttons").mousePressed(() => {
         state = "color";
+        colorPickerPrimary.show();
+        colorPickerSecondary.show();
     });
-    // colorButton.size(width/7, height/14).parent("colorDiv");
     colorButton.size(width/7, height/14).parent("colorDiv");
-    // colorButton.center("horizontal");
+
     readyDiv = createDiv("").id("readyDiv").class("divs").position(2*width/3, 9 * height/10).size(width/3, height/10);
     readyButton = createButton("READY").class("buttons").mousePressed(() => {
         state = "ready";
@@ -109,15 +124,29 @@ function setup(){
         statsButton.hide();
         colorButton.hide();
         readyButton.hide();
+        colorPickerPrimary.hide();
+        colorPickerSecondary.hide();
     });
     readyButton.size(width/7, height/14).parent("readyDiv");
 
     yesDiv = createDiv("").id("yesDiv").class("divs").position(0, 7 * height/10).size(width/2, height/10);
     yesButton = createButton("YES").class("buttons").parent("yesDiv").size(width/7, height/14).mousePressed(() => {
         fish.name = nameInput.value();
+        //reset sizes? hmm....
+        delete fish.bodyLength;
+        delete fish.bodyWidth;
+        delete fish.frontFinSize;
+        delete fish.backFinSize;
+        delete fish.position;
+        
         socket.emit("newFish", fish);
+        nameInput.hide();
+        yesButton.hide();
+        noButton.hide();
+        state = "done";
     });
     yesButton.hide();
+
     noDiv = createDiv("").id("noDiv").class("divs").position(width/2, 7 * height/10).size(width/2, height/10);
     noButton = createButton("NO").class("buttons").parent("noDiv").size(width/7, height/14).mousePressed(() => {
         yesButton.hide();
@@ -141,9 +170,9 @@ function setup(){
         yPos: map(fish.strength, 0, 16, 6.5 * height / 10 + 3 * height / 10 / 2, 6.5 * height / 10 - 3 * height / 10 / 2),
     }
 
+    //fish info
     fish.position.x = width/2;
     fish.position.y = 3.5 * height / 10;
-
     type = checkType();
 };
 
@@ -169,14 +198,23 @@ function draw(){
         type = checkType();
         displayStatsSlider();
     } else if (state == "color") {
-
-
+        //nothing here, handled by buttons
     } else if (state == "ready") {
         push();
         textSize(width/20);
-        text("Send this fish to the Pond?", width / 2, 6 * height / 10);
+        text("Send this fish to the Pond?", width / 2, 6 * height / 10, width - 40);
         pop();
-    }
+    } else if (state == "done"){
+        push();
+        background(82,135,39);
+        stroke(0);
+        fill(255);
+        textSize(width/15);
+        text("Fish sent to Pond!", width / 2, height / 4, width - 40);
+        text("Refresh to make a new fish!", width / 2, 3 * height / 4, width - 40);
+        pop();
+    };
+
 }
 
 function mouseDragged(){
@@ -197,8 +235,7 @@ function mouseDragged(){
 }
 
 function updateFish(){  //redundant from defaults.js
-    // fish.primaryColor = randomHex(),
-    // fish.secondaryColor = randomHex(),
+    //color updated in pickers
     fish.strength = statsSlider.yVal,
     fish.defense = 16 - statsSlider.yVal,
     fish.speed = statsSlider.xVal,

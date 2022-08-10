@@ -59,6 +59,12 @@ var inputs = io.of('/')
 inputs.on('connection', (socket) => {
   console.log('new input client!: ' + socket.id);
 
+  socket.on("newFish", (data) => {
+    school.push(new Fish(data));
+    console.log("new fish from " + socket.id);
+    console.log(data);
+  });
+
   //listen for this client to disconnect
   socket.on('disconnect', () => {
     console.log('input client disconnected: ' + socket.id);

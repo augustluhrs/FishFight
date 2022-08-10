@@ -14,10 +14,9 @@ Prototype fish creation on mobile populating a school of fish flocking around a 
 - Can also select diet preferences? (extra way to make fish unique, could be linked to powers/abilities)
 - Whats character limit on names?
 - What automod libraries are there for names?
+- I'm imagining Jojo-style fish art, where strong fish have huge, rippling arms and defensive fish have juicy butts.
 
 ## ToDo
 
 - test on glitch/mobile
-- color slider
-- server send fish to pond
 - text size
