@@ -61,7 +61,7 @@ let statsSlider = {
 }
 
 //from defaults.js
-const displayScale = 2;
+const displayScale = 1.8;
 const finMin = 3 * displayScale;
 const finMax = 40 * displayScale;
 const widthMin = 10 * displayScale;
@@ -70,7 +70,7 @@ const lengthMin = 50 * displayScale;
 const lengthMax = 100 * displayScale;
 
 function setup(){
-    canvas = createCanvas(windowWidth - 5, windowHeight - 5); //TODO better way of ensuring scrollbars don't show up
+    canvas = createCanvas(windowWidth, windowHeight); //TODO better way of ensuring scrollbars don't show up
     canvas.id("canvas");
     background(82,135,39);
 
@@ -85,19 +85,19 @@ function setup(){
     strokeWeight(2);
 
     //color pickers
-    colorPickerPrimary = createColorPicker(fish.primaryColor).position(width/2.5, 4.5 * height/10).size(width/4, height/14);
+    colorPickerPrimary = createColorPicker(fish.primaryColor).position(width/4, 5.5 * height/10).size(width/2, height/14);
     colorPickerPrimary.input(()=>{
         fish.primaryColor = colorPickerPrimary.value();
     });
     colorPickerPrimary.hide();
-    colorPickerSecondary = createColorPicker(fish.secondaryColor).position(width/2.5, 6 * height/10).size(width/4, height/14);
+    colorPickerSecondary = createColorPicker(fish.secondaryColor).position(width/4, 6.5 * height/10).size(width/2, height/14);
     colorPickerSecondary.input(()=>{
         fish.secondaryColor = colorPickerSecondary.value();
     });
     colorPickerSecondary.hide();
 
     //UI
-    nameInput = createInput("FISH NAME").class("inputs").position(0, 0.5 * height / 10).size(width - 50, height/10);
+    nameInput = createInput("FISH NAME").class("inputs").position(0, 0).size(width - 50, height/10);
     nameInput.center("horizontal");
 
     statsDiv = createDiv("").id("statsDiv").class("divs").position(0, 9 * height/10).size(width/3, height/10);
@@ -106,7 +106,7 @@ function setup(){
         colorPickerPrimary.hide();
         colorPickerSecondary.hide();
     });
-    statsButton.size(width/7, height/14).parent("statsDiv");
+    statsButton.size(width/5, height/14).parent("statsDiv");
 
     colorDiv = createDiv("").id("colorDiv").class("divs").position(width/3, 9 * height/10).size(width/3, height/10);
     colorButton = createButton("COLOR").class("buttons").mousePressed(() => {
@@ -114,7 +114,7 @@ function setup(){
         colorPickerPrimary.show();
         colorPickerSecondary.show();
     });
-    colorButton.size(width/7, height/14).parent("colorDiv");
+    colorButton.size(width/5, height/14).parent("colorDiv");
 
     readyDiv = createDiv("").id("readyDiv").class("divs").position(2*width/3, 9 * height/10).size(width/3, height/10);
     readyButton = createButton("READY").class("buttons").mousePressed(() => {
@@ -127,7 +127,7 @@ function setup(){
         colorPickerPrimary.hide();
         colorPickerSecondary.hide();
     });
-    readyButton.size(width/7, height/14).parent("readyDiv");
+    readyButton.size(width/5, height/14).parent("readyDiv");
 
     yesDiv = createDiv("").id("yesDiv").class("divs").position(0, 7 * height/10).size(width/2, height/10);
     yesButton = createButton("YES").class("buttons").parent("yesDiv").size(width/7, height/14).mousePressed(() => {
@@ -181,39 +181,41 @@ function setup(){
 //
 
 function draw(){
+  if (state == "done"){
+    push();
+    background(82,135,39);
+    stroke(0);
+    fill(255);
+    textSize(width/15);
+    text("Fish sent to Pond!", width / 2, height / 4, width - 40);
+    text("Refresh to make a new fish!", width / 2, 3 * height / 4, width - 40);
+    pop();
+  } else {
     background(82,135,39);
     push();
     stroke(0);
     fill(255);
     textSize(width/20);
-    text("the", width / 2, 1.75 * height / 10);
+    text("the", width / 2, 1.65 * height / 10);
     textSize(width/15);
-    text(type, width / 2, 2.25 * height / 10);
+    text(type, width / 2, 2.15 * height / 10);
     pop();
 
     updateFish();
     displayFish();
+  }
 
-    if (state == "stats"){
-        type = checkType();
-        displayStatsSlider();
-    } else if (state == "color") {
-        //nothing here, handled by buttons
-    } else if (state == "ready") {
-        push();
-        textSize(width/20);
-        text("Send this fish to the Pond?", width / 2, 6 * height / 10, width - 40);
-        pop();
-    } else if (state == "done"){
-        push();
-        background(82,135,39);
-        stroke(0);
-        fill(255);
-        textSize(width/15);
-        text("Fish sent to Pond!", width / 2, height / 4, width - 40);
-        text("Refresh to make a new fish!", width / 2, 3 * height / 4, width - 40);
-        pop();
-    };
+  if (state == "stats"){
+      type = checkType();
+      displayStatsSlider();
+  } else if (state == "color") {
+      //nothing here, handled by buttons
+  } else if (state == "ready") {
+      push();
+      textSize(width/20);
+      text("Send this fish to the Pond?", width / 2, 6 * height / 10, width - 40);
+      pop();
+  }
 
 }
 

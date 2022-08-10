@@ -46,7 +46,7 @@ socket.on('baitPos', (data) => { //data is a Victor
 //
 
 let school = [];
-let randomFishButton;
+let randomFishButton, clearFishButton;
 let isBait = false;
 let baitPos = {x: 0, y: 0};
 
@@ -67,6 +67,7 @@ function setup(){
 
     //UI
     randomFishButton = createButton("RANDOM FISH").class("buttons").mousePressed(() => {socket.emit("randomFish")});
+    clearFishButton = createButton("CLEAR ALL FISH").class("buttons").mousePressed(() => {socket.emit("clearFish")});
 };
 
 //

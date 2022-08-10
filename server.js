@@ -80,6 +80,10 @@ screen.on('connection', (socket) => {
   socket.on("randomFish", () => {
     addRandomFish();
   });
+  
+  socket.on("clearFish", () => {
+    school = [];
+  });
 
   socket.on("baitToggle", () => {
     isBait = !isBait;
