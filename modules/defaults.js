@@ -8,12 +8,16 @@ const worldSize = {
 }
 
 //fish display scales (ba dum tss)
-// const finMin = 10;
-// const finMax = 100;
-const finMin = .1;
-const finMax = .6;
-const sizeMin = 5;
-const sizeMax = 100; //will be doubled in display
+const finMin = 3;
+const finMax = 40;
+// const finMin = .1;
+// const finMax = .6;
+// const sizeMin = 5;
+// const sizeMax = 100; //will be doubled in display
+const widthMin = 10;
+const widthMax = 80;
+const lengthMin = 50;
+const lengthMax = 100;
 const speedMin = .1;
 const speedMax = 2;
 
@@ -46,9 +50,13 @@ exports.map = map;
 exports.generate_ID = generate_ID;
 exports.hexToRgb = hexToRgb;
 exports.randomHex = randomHex;
-exports.sizeMin = sizeMin;
-exports.sizeMax = sizeMax;
+// exports.sizeMin = sizeMin;
+// exports.sizeMax = sizeMax;
 exports.finMin = finMin;
 exports.finMax = finMax;
 exports.speedMin = speedMin;
 exports.speedMax = speedMax;
+exports.widthMin = widthMin;
+exports.widthMax = widthMax;
+exports.lengthMin = lengthMin;
+exports.lengthMax = lengthMax;

@@ -17,13 +17,7 @@ Prototype fish creation on mobile populating a school of fish flocking around a 
 
 ## ToDo
 
-- fix width/length ratios
-- fix eye
-- fix front fin width / back fin length (change up)
-- text on slider axes
-- center css elements
 - test on glitch/mobile
 - color slider
 - server send fish to pond
 - text size
-- "the" in between name and type

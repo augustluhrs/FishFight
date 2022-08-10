@@ -29,12 +29,11 @@ class Fish {
         //flocking and display stats derived from fighting stats
         // this.r = stats.r || D.map(this.size, 0, 16, D.sizeMin, D.sizeMax);
         this.maxSpeed = stats.maxSpeed || D.map(this.speed, 0, 16, D.speedMin, D.speedMax);
-        this.bodyLength = stats.bodyLength || D.map(this.size, 16, 0, D.sizeMin * 2, D.sizeMax * 2);
-        this.bodyWidth = stats.bodyWidth || D.map(this.size, 0, 16, D.sizeMin, D.sizeMax);
-        // this.bodyLength = stats.bodyLength || D.map(this.size, 16, 0, D.sizeMax / 2, D.sizeMax);
-        // this.bodyWidth = stats.bodyLength || D.map(this.size, 0, 16, D.sizeMax / 4, D.sizeMax);
-        this.frontFinSize = stats.frontFinSize || D.map(this.strength, 0, 16, this.bodyWidth * D.finMin, this.bodyWidth * D.finMax);
-        this.backFinSize = stats.backFinSize || D.map(this.defense, 0, 16, this.bodyLength * D.finMin, this.bodyLength * D.finMax);
+        this.bodyLength = stats.bodyLength || D.map(this.size, 16, 0, D.lengthMin, D.lengthMax);
+        this.bodyWidth = stats.bodyWidth || D.map(this.size, 0, 16, D.widthMin, D.widthMax);
+
+        this.frontFinSize = stats.frontFinSize || D.map(this.strength, 0, 16, D.finMin, D.finMax);
+        this.backFinSize = stats.backFinSize || D.map(this.defense, 0, 16, D.finMin, D.finMax);
 
         this.foid = new Foid(this);
     }

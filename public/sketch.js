@@ -29,8 +29,8 @@ socket.on('connect', () => {
 //
 // SETUP AND VARIABLES
 //
-
-// let statsDiv, colorDiv, readyDiv, nameDiv;
+let canvas;
+let statsDiv, colorDiv, readyDiv, nameDiv, yesDiv, noDiv;
 let statsButton, colorButton, readyButton, nameInput;
 let yesButton, noButton;
 let type = "";
@@ -59,8 +59,17 @@ let statsSlider = {
     h: 0
 }
 
+//from defaults.js
+const finMin = 3;
+const finMax = 40;
+const widthMin = 10;
+const widthMax = 80;
+const lengthMin = 50;
+const lengthMax = 100;
+
 function setup(){
-    createCanvas(windowWidth - 5, windowHeight - 5); //TODO better way of ensuring scrollbars don't show up
+    canvas = createCanvas(windowWidth - 5, windowHeight - 5); //TODO better way of ensuring scrollbars don't show up
+    canvas.id("canvas");
     background(82,135,39);
 
     //layout
@@ -70,20 +79,30 @@ function setup(){
     angleMode(RADIANS);
     textFont(font);
     textAlign(CENTER, CENTER);
-    textSize(width/30);
+    textSize(width/40);
     strokeWeight(2);
 
     //UI
-    // nameDiv = createDiv.position()
-    nameInput = createInput("FISH NAME").class("inputs").position(width/4, height / 10);
+    // nameDiv = createDiv("").position(0, height / 10).size(width, height / 10).class("divs").id("nameDiv");
+    // nameInput = createInput("FISH NAME").class("inputs").parent("nameDiv");
+    nameInput = createInput("FISH NAME").class("inputs").position(0, 0.5 * height / 10).size(width/2, height/10);
     nameInput.center("horizontal");
-    statsButton = createButton("STATS").class("buttons").position(width/4, 9 * height / 10).mousePressed(() => {
+    statsDiv = createDiv("").id("statsDiv").class("divs").position(0, 9 * height/10).size(width/3, height/10);
+    statsButton = createButton("STATS").class("buttons").mousePressed(() => {
         state = "stats";
     });
-    colorButton = createButton("COLOR").class("buttons").position(2*width/4, 9 * height / 10).mousePressed(() => {
+    statsButton.size(width/7, height/14).parent("statsDiv");
+    // statsButton.size(width/7, height/14).parent("statsDiv").center("horizontal");
+    colorDiv = createDiv("").id("colorDiv").class("divs").position(width/3, 9 * height/10).size(width/3, height/10);
+    // colorDiv.center("horizontal");
+    colorButton = createButton("COLOR").class("buttons").mousePressed(() => {
         state = "color";
     });
-    readyButton = createButton("READY").class("buttons").position(3*width/4, 9 * height / 10).mousePressed(() => {
+    // colorButton.size(width/7, height/14).parent("colorDiv");
+    colorButton.size(width/7, height/14).parent("colorDiv");
+    // colorButton.center("horizontal");
+    readyDiv = createDiv("").id("readyDiv").class("divs").position(2*width/3, 9 * height/10).size(width/3, height/10);
+    readyButton = createButton("READY").class("buttons").mousePressed(() => {
         state = "ready";
         yesButton.show();
         noButton.show();
@@ -91,14 +110,16 @@ function setup(){
         colorButton.hide();
         readyButton.hide();
     });
-    // readyButton.hide();
-    yesButton = createButton("YES").class("buttons").position(width/3, 8 * height / 10).mousePressed(() => {
+    readyButton.size(width/7, height/14).parent("readyDiv");
+
+    yesDiv = createDiv("").id("yesDiv").class("divs").position(0, 7 * height/10).size(width/2, height/10);
+    yesButton = createButton("YES").class("buttons").parent("yesDiv").size(width/7, height/14).mousePressed(() => {
         fish.name = nameInput.value();
-        
         socket.emit("newFish", fish);
     });
     yesButton.hide();
-    noButton = createButton("NO").class("buttons").position(2*width/3, 8 * height / 10).mousePressed(() => {
+    noDiv = createDiv("").id("noDiv").class("divs").position(width/2, 7 * height/10).size(width/2, height/10);
+    noButton = createButton("NO").class("buttons").parent("noDiv").size(width/7, height/14).mousePressed(() => {
         yesButton.hide();
         noButton.hide();
         state = "stats";
@@ -113,15 +134,15 @@ function setup(){
         xVal: fish.speed,
         yVal: fish.strength,
         xCenter: width/2,
-        yCenter: 7 * height / 10,
+        yCenter: 6.5 * height / 10,
         w: 3 * height / 10,
         h: 3 * height / 10,
         xPos: map(fish.speed, 0, 16, width/2 - 3 * height / 10 / 2, width/2 + 3 * height / 10 / 2), 
-        yPos: map(fish.strength, 0, 16, 7 * height / 10 - 3 * height / 10 / 2, 7 * height / 10 + 3 * height / 10 / 2),
+        yPos: map(fish.strength, 0, 16, 6.5 * height / 10 + 3 * height / 10 / 2, 6.5 * height / 10 - 3 * height / 10 / 2),
     }
 
     fish.position.x = width/2;
-    fish.position.y = 4 * height / 10;
+    fish.position.y = 3.5 * height / 10;
 
     type = checkType();
 };
@@ -135,7 +156,10 @@ function draw(){
     push();
     stroke(0);
     fill(255);
-    text(type, width / 2, 2 * height / 10);
+    textSize(width/20);
+    text("the", width / 2, 1.75 * height / 10);
+    textSize(width/15);
+    text(type, width / 2, 2.25 * height / 10);
     pop();
 
     updateFish();
@@ -148,7 +172,10 @@ function draw(){
 
 
     } else if (state == "ready") {
+        push();
+        textSize(width/20);
         text("Send this fish to the Pond?", width / 2, 6 * height / 10);
+        pop();
     }
 }
 
@@ -176,10 +203,10 @@ function updateFish(){  //redundant from defaults.js
     fish.defense = 16 - statsSlider.yVal,
     fish.speed = statsSlider.xVal,
     fish.size = 16 - statsSlider.xVal,
-    fish.bodyLength = map(fish.size, 16, 0, 5 * 2, 100 * 2);
-    fish.bodyWidth = map(fish.size, 0, 16, 5, 100);
-    fish.frontFinSize = map(fish.strength, 0, 16, fish.bodyWidth * 0.1, fish.bodyWidth * 0.6);
-    fish.backFinSize = map(fish.defense, 0, 16, fish.bodyLength * 0.1, fish.bodyLength * 0.6);
+    fish.bodyLength = map(fish.size, 16, 0, lengthMin, lengthMax);
+    fish.bodyWidth = map(fish.size, 0, 16, widthMin, widthMax);
+    fish.frontFinSize = map(fish.strength, 0, 16, finMin, finMax);
+    fish.backFinSize = map(fish.defense, 0, 16, finMin, finMax);
 }
 
 function displayFish(){
@@ -203,7 +230,7 @@ function displayFish(){
 
     //eye
     fill(0);
-    ellipse((-fish.bodyLength / 2) + (fish.bodyLength / 10), 0, 10, 10);
+    ellipse((-fish.bodyLength / 2) + (fish.bodyLength / 8), 0, 10, 10);
 
     pop();
 }
@@ -224,6 +251,18 @@ function displayStatsSlider(){
     stroke(0);
     fill(255);
     ellipse(ss.xPos, ss.yPos, ss.w / 12);
+
+    //labels
+    textSize(width/20);
+    textAlign(CENTER, BOTTOM);
+    text("Strength", ss.xCenter, ss.yCenter - ss.h / 1.9);
+    textAlign(LEFT, CENTER);
+    text("Speed", ss.xCenter + ss.w / 1.9, ss.yCenter);
+    textAlign(CENTER, TOP);
+    text("Defense", ss.xCenter, ss.yCenter + ss.h / 1.9);
+    textAlign(RIGHT, CENTER);
+    text("Bulk",  ss.xCenter - ss.w / 1.9, ss.yCenter);
+
     pop();
 }
 

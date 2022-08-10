@@ -112,7 +112,7 @@ function displayFish(fish){
 
     //eye
     fill(0);
-    ellipse((-fish.bodyLength / 2) + (fish.bodyLength / 10), 0, 10, 10);
+    ellipse((-fish.bodyLength / 2) + (fish.bodyLength / 8), 0, 10, 10);
 
     pop();
 }

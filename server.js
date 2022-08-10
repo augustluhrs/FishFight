@@ -77,6 +77,7 @@ screen.on('connection', (socket) => {
 
   socket.on("baitToggle", () => {
     isBait = !isBait;
+    console.log("Bait: " + isBait);
     screen.emit("baitToggle", isBait);
   });
 
