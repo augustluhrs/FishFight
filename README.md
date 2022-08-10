@@ -20,3 +20,9 @@ Prototype fish creation on mobile populating a school of fish flocking around a 
 
 - test on glitch/mobile
 - text size
+
+## Asset Credits
+
+[Kelp Forest](https://photolib.noaa.gov/Collections/Fisheries/Life-In-The-Sea/Marine-Plants-Phytoplankton)
+
+[Worm on Hook](https://www.clipartmax.com/download/m2i8b1A0b1d3m2i8_fish-hook-with-worm-clip-art-worm-on-a-hook-clipart/)
